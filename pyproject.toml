@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "danmubridge"
+version = "0.1.0"
+description = "Download Bilibili danmaku, convert to ASS, and attach to Jellyfin as external subtitles."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Elliott Zheng" }
+]
+dependencies = [
+  "brotli>=1.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/elliottzheng/danmubridge"
+Repository = "https://github.com/elliottzheng/danmubridge"
+Issues = "https://github.com/elliottzheng/danmubridge/issues"
+
+[project.scripts]
+danmubridge = "danmubridge.cli:main"
+danmubridge-fetch = "danmubridge.fetch:main"
+danmubridge-attach = "danmubridge.attach:main"
+danmubridge-sync = "danmubridge.sync:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
