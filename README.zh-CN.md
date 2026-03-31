@@ -1,6 +1,6 @@
 # DanmuBridge
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[简体中文](README.md) | [English](README.en.md)
 
 DanmuBridge 用于下载哔哩哔哩番剧弹幕，将其转换为 `.ass` 字幕，并复制到 Jellyfin 剧集目录中作为外挂字幕使用。
 

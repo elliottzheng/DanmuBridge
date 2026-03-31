@@ -1,79 +1,79 @@
 # DanmuBridge
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[简体中文](README.md) | [English](README.en.md)
 
-DanmuBridge downloads Bilibili bangumi danmaku, converts it to `.ass`, and attaches the result to a Jellyfin series folder as external subtitles.
+DanmuBridge 用于下载哔哩哔哩番剧弹幕，将其转换为 `.ass` 字幕，并复制到 Jellyfin 剧集目录中作为外挂字幕使用。
 
-DanmuBridge is a cross-platform Python CLI. The examples below use generic paths and are not Windows-specific.
+DanmuBridge 是一个跨平台的 Python CLI，下面的示例路径使用中性写法，不限定 Windows。
 
-## Author
+## 作者
 
 - GitHub: [Elliott Zheng](https://github.com/elliottzheng)
 - PyPI: `elliottzheng`
 
-## Installation
+## 安装
 
-Install from PyPI:
+从 PyPI 安装：
 
 ```bash
 pip install danmubridge
 ```
 
-Install directly from GitHub:
+直接从 GitHub 安装：
 
 ```bash
 pip install git+https://github.com/elliottzheng/danmubridge.git
 ```
 
-For local development from source:
+本地源码开发安装：
 
 ```bash
 pip install .
 ```
 
-After installation, use the `danmubridge` CLI.
+安装完成后可直接使用 `danmubridge` 命令。
 
-## Getting the season_id
+## 如何获取 season_id
 
-This project needs the Bilibili bangumi `season_id`.
-In normal Bilibili URLs, this is the number after `ss` in the bangumi play page.
+这个项目需要的参数是哔哩哔哩番剧的 `season_id`。
+通常它就是番剧播放页链接里 `ss` 后面的数字。
 
-Example:
+例如：
 
 ```text
 https://www.bilibili.com/bangumi/play/ss34430
 ```
 
-In this case, the `season_id` is `34430`.
+这里的 `season_id` 就是 `34430`。
 
-Another example from the reference project documentation:
+再举一个参考项目里的例子：
 
 ```text
 https://www.bilibili.com/bangumi/play/ss844/?from=search
 ```
 
-In this case, the `season_id` is `844`.
+这里的 `season_id` 就是 `844`。
 
-Important:
+需要注意：
 
-- Do not enter the episode `cid`
-- Do not enter the `ep` number from `.../ep123456`
-- For this CLI, `34430` means the bangumi `season_id`
+- 不要填单集视频的 `cid`
+- 不要填链接里 `.../ep123456` 这种 `ep` 编号
+- 在本项目中，`34430` 这种参数表示的是番剧 `season_id`
 
-## Quick Start
+## 快速开始
 
-The main entrypoint is `sync`, which downloads danmaku, converts it to ASS, and attaches it to your Jellyfin season folder in one command:
+主入口命令是 `sync`，它会一条命令完成弹幕下载、ASS 转换和 Jellyfin 外挂字幕复制：
 
 ```bash
 danmubridge sync 34430 /media/anime/Jujutsu.Kaisen.S01 --replace
 ```
 
-## Jellyfin Folder Requirement
+## Jellyfin 剧集目录要求
 
-The target season folder must already contain the video files.
-The number of video files in that folder must match the number of generated subtitle files.
+目标剧集目录中必须已经存在视频文件。
+而且该目录中的视频文件数量，必须和生成出来的字幕文件数量一致。
 
-For example, if the bangumi has 24 episodes, the target folder should contain 24 video files such as:
+例如，如果番剧一共有 24 集，那么目标目录中应该有 24 个视频文件，例如：
 
 ```text
 Jujutsu.Kaisen.S01E01.mkv
@@ -82,78 +82,78 @@ Jujutsu.Kaisen.S01E02.mkv
 Jujutsu.Kaisen.S01E24.mkv
 ```
 
-If the subtitle count and video count do not match, the command will stop instead of guessing.
+如果字幕数量和视频数量不一致，程序会直接停止，而不是猜测如何匹配。
 
-## Other Commands
+## 其他命令
 
-Use `fetch` when you only want to download and generate ASS subtitles:
+如果你只想下载并生成 ASS 字幕，可以使用 `fetch`：
 
 ```bash
 danmubridge fetch 34430
 ```
 
-By default, the output directory is separated by `season_id`, for example:
+默认情况下，输出目录会按番剧 `season_id` 分开，例如：
 
 ```text
 generated_danmaku_ass/ss34430/
 ```
 
-If you want to control the output path yourself:
+如果你希望自定义下载输出目录，可以显式指定：
 
 ```bash
 danmubridge fetch 34430 --output-dir /data/subtitles/jujutsu-kaisen
 ```
 
-Use `attach` when you already have generated subtitles and only want to copy them into a Jellyfin folder:
+如果你已经有字幕，只想复制到 Jellyfin 目录，可以使用 `attach`：
 
 ```bash
 danmubridge attach /media/anime/Jujutsu.Kaisen.S01 --season-id 34430 --replace
 ```
 
-If you do not want to use the default inferred subtitle directory, you can pass it explicitly:
+如果你不想按默认目录推断，也可以手动指定字幕来源目录：
 
 ```bash
 danmubridge attach /media/anime/Jujutsu.Kaisen.S01 --source-dir /data/subtitles/jujutsu-kaisen --replace
 ```
 
-## CLI Overview
+## CLI 总览
 
-`danmubridge` provides three subcommands:
+`danmubridge` 提供 3 个子命令：
 
 - `sync`
-  End-to-end entrypoint that runs both steps
+  一条命令跑完整流程
 - `fetch`
-  Downloads danmaku and generates ASS files
+  下载番剧弹幕并生成 ASS 字幕
 - `attach`
-  Copies generated subtitles into a Jellyfin season folder
+  将已有字幕复制到 Jellyfin 剧集目录
 
-## Requirements
+## 运行要求
 
 - Python 3.10+
-- Network access to Bilibili and GitHub
+- 可以访问 Bilibili 和 GitHub 的网络环境
 
-`brotli` is installed automatically as a normal dependency, so the CLI can handle `br`-compressed responses without extra setup.
+`brotli` 已经作为正式依赖自动安装，用来处理部分 `br` 压缩响应，用户不需要额外关心。
 
-## Default Paths
+## 默认输出位置
 
-- Generated ASS subtitles: `generated_danmaku_ass/ss<season_id>/`
-- Temporary cache: user cache directory under `danmubridge/danmaku_cache/ss<season_id>/`
-- Downloaded converter: user cache directory under `danmubridge/danmaku2ass/`
+- 生成的 ASS 字幕：`generated_danmaku_ass/ss<season_id>/`
+- 临时缓存：用户缓存目录下的 `danmubridge/danmaku_cache/ss<season_id>/`
+- 自动下载的 `danmaku2ass`：用户缓存目录下的 `danmubridge/danmaku2ass/`
 
-These paths can be overridden with CLI arguments.
+这些路径都可以通过 CLI 参数覆盖。
 
-## Notes
+## 说明
 
-- Subtitles are matched to videos by episode order.
-- Video files are sorted by `SxxEyy` when available.
-- Existing `*.jpn.ass` files require `--replace` to overwrite.
-- `danmaku2ass` is downloaded automatically on first run and stored in the user cache directory, not in your media folder.
+- 字幕与视频的匹配方式基于集数顺序。
+- 如果视频文件名中包含 `SxxEyy`，会优先按该信息排序。
+- 如果目标目录中已存在同名 `*.jpn.ass` 文件，需要使用 `--replace` 覆盖。
+- `danmaku2ass` 会在首次运行时自动下载，并缓存到用户目录，不会污染媒体目录。
 
-## Reference
+## 参考
 
-The `season_id` explanation above is aligned with the usage notes in the BiliDanmaku repository:
+上面关于 `season_id` 的说明，参考了这个项目的使用文档：
 https://github.com/fangxx3863/BiliDanmaku
 
-## License
+## 许可证
 
 MIT
